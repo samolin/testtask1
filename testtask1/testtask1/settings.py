@@ -77,11 +77,11 @@ WSGI_APPLICATION = 'testtask1.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'testtask1',
-        'USER': 'vlad',
-        'PASSWORD': '',
+        'NAME': 'black_flow',
+        'USER': 'black_flow',
+        'PASSWORD': 'asd',
         'HOST': 'localhost',
-        'PORT': '',
+        'PORT': '5432',
     }
 }
 
