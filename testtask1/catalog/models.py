@@ -1,4 +1,6 @@
 from django.db import models
+from datetime import date
+from django.contrib.auth.models import User
 
 class Genre(models.Model):
     name = models.CharField(max_length=200, help_text='Enter a book genre')
@@ -73,9 +75,19 @@ class BookInstance(models.Model):
         help_text='Book availability',
     )
 
+    
+
+    borrower = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+
+    @property
+    def is_overdue(self):
+        if self.due_back and date.today() > self.due_back:
+            return True
+        return False
+
     class Meta:
         ordering = ['due_back']
-
+        permissions = (("can_mark_returned", "Set book as returned"),)   
     def __str__(self):
         """String for representing the Model object."""
         return f'{self.id} ({self.book.title})'
@@ -89,7 +101,7 @@ class Author(models.Model):
     date_of_death = models.DateField('Died', null=True, blank=True)
 
     class Meta:
-        ordering = ['last_name', 'first_name']
+        ordering = ['last_name']
 
     def get_absolute_url(self):
         """Returns the url to access a particular author instance."""
@@ -98,7 +110,6 @@ class Author(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return f'{self.last_name}, {self.first_name}'
-
 
 
 # Create your models here.
